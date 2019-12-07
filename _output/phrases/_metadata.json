@@ -10,5 +10,11 @@
         "version_id": 1000000,
         "version_string": "1.0.0",
         "hash": "1ddec0f92f297e937bdf409977df0c02"
+    },
+    "tpb_error_occurred_while_creating_order.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "0f89b5418a59aae8b70d9a0516721c92"
     }
 }
