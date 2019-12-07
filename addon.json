@@ -1,0 +1,16 @@
+{
+    "legacy_addon_id": "",
+    "title": "[tl] Payment BaoKim",
+    "description": "Support BaoKim payment gateway",
+    "version_id": 1000000,
+    "version_string": "1.0.0",
+    "dev": "Truonglv",
+    "dev_url": "https://nobita.me",
+    "faq_url": "",
+    "support_url": "https://github.com/luutruong/XF2_PaymentBaoKim",
+    "extra_urls": {
+        "Repository": "https://github.com/luutruong/XF2_PaymentBaoKim"
+    },
+    "require": [],
+    "icon": ""
+}

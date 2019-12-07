@@ -1,0 +1,14 @@
+{
+    "tpb_api_key.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "d876ff8da67c3731ae25d8335a4168b4"
+    },
+    "tpb_api_secret.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "1ddec0f92f297e937bdf409977df0c02"
+    }
+}
