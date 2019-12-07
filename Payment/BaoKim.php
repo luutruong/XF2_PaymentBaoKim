@@ -37,10 +37,10 @@ class BaoKim extends AbstractProvider
     {
         $enabled = (bool) \XF::config('enableLivePayments');
         if ($enabled) {
-            return 'https://api.baokim.vn/payment';
+            return 'https://api.baokim.vn';
         }
 
-        return 'https://sandbox-api.baokim.vn/payment';
+        return 'https://sandbox-api.baokim.vn';
     }
 
     /**
@@ -79,7 +79,7 @@ class BaoKim extends AbstractProvider
 
         try {
             $response = $client->post(
-                $this->getApiEndpoint() . '/api/v4/order/send',
+                $this->getApiEndpoint() . '/payment/api/v4/order/send',
                 [
                     'form_params' => $params,
                     'query' => [
@@ -101,7 +101,7 @@ class BaoKim extends AbstractProvider
         $json = \json_decode($body, true);
 
         /** @var PaymentProviderLog $log */
-        $log = $controller->em()->create('XF:ProviderLog');
+        $log = $controller->em()->create('XF:PaymentProviderLog');
         $log->purchase_request_key = $purchaseRequest->request_key;
         $log->provider_id = $this->providerId;
         $log->transaction_id = isset($json['data'], $json['data']['order_id'])
@@ -129,9 +129,9 @@ class BaoKim extends AbstractProvider
             throw new PrintableException(\XF::phrase('tpb_error_occurred_while_creating_order'));
         }
 
-        if (isset($json['data'], $json['data']['redirect_url'])) {
+        if (isset($json['data'], $json['data']['payment_url'])) {
             return $controller->redirect(
-                $this->getApiEndpoint() . '/' . \ltrim($json['data']['redirect_url'], '/'),
+                $json['data']['payment_url'],
                 ''
             );
         }
