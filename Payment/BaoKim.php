@@ -95,6 +95,7 @@ class BaoKim extends AbstractProvider
             $client = \XF::app()->http()->client();
 
             $response = null;
+
             try {
                 $response = $client->get($this->getApiEndpoint() . '/payment/api/v4/bpm/list', [
                     'query' => [
