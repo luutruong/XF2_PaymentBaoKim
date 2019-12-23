@@ -1,4 +1,22 @@
 {
+    "tbp_bank_name.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "984482eb9ff11e6310fef641d2268a2a"
+    },
+    "tbp_continue.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "a0bfb8e59e6c13fc8d990781f77694fe"
+    },
+    "tbp_please_choose_a_valid_bank.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "17bf91868584e6128d33cf7766ea919a"
+    },
     "tpb_api_key.txt": {
         "global_cache": false,
         "version_id": 1000000,
@@ -10,6 +28,12 @@
         "version_id": 1000000,
         "version_string": "1.0.0",
         "hash": "1ddec0f92f297e937bdf409977df0c02"
+    },
+    "tpb_choose_a_bank.txt": {
+        "global_cache": false,
+        "version_id": 1000000,
+        "version_string": "1.0.0",
+        "hash": "ab4147235204a436c09e00d6722082ab"
     },
     "tpb_error_occurred_while_creating_order.txt": {
         "global_cache": false,

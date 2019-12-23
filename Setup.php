@@ -33,5 +33,6 @@ class Setup extends AbstractSetup
     {
         $this->db()
             ->delete('xf_payment_provider', 'provider_id = ?', BaoKim::PROVIDER_ID);
+        \XF::app()->registry()->delete(BaoKim::KEY_DATA_REGISTRY_BANK_LIST);
     }
 }

@@ -22,6 +22,8 @@ class BaoKim extends AbstractProvider
     const ALGO = 'HS256';
     const TOKEN_EXPIRE = 60; // token expires in seconds
 
+    const KEY_DATA_REGISTRY_BANK_LIST = 'TBP_BankList';
+
     /**
      * @return string
      */
@@ -69,15 +71,105 @@ class BaoKim extends AbstractProvider
     }
 
     /**
+     * @param PaymentProfile $paymentProfile
+     * @return array
+     */
+    protected function getBankList(PaymentProfile $paymentProfile)
+    {
+        $dataRegistry = \XF::app()->registry();
+        $cached = $dataRegistry->get(self::KEY_DATA_REGISTRY_BANK_LIST);
+
+        $invalidate = false;
+
+        if (!\is_array($cached)) {
+            $invalidate = true;
+        } else {
+            $ttl = 86400; // cache for 1 day
+            if (($cached['lastFetched'] + $ttl) <= \XF::$time) {
+                $invalidate = true;
+                $cached = [];
+            }
+        }
+
+        if ($invalidate) {
+            $client = \XF::app()->http()->client();
+
+            $response = null;
+            try {
+                $response = $client->get($this->getApiEndpoint() . '/payment/api/v4/bpm/list', [
+                    'query' => [
+                        'jwt' => $this->getToken($paymentProfile, [])
+                    ]
+                ]);
+            } catch (\Exception $e) {
+            }
+
+            if ($response === null || $response->getStatusCode() !== 200) {
+                return [];
+            }
+
+            $json = \json_decode(\strval($response->getBody()), true);
+            if (!isset($json['data'])) {
+                return [];
+            }
+
+            $cached = [
+                'bankList' => $json['data'],
+                'lastFetched' => \XF::$time
+            ];
+
+            $dataRegistry->set(self::KEY_DATA_REGISTRY_BANK_LIST, $cached);
+        }
+
+        return $cached['bankList'];
+    }
+
+    /**
      * @param Controller $controller
      * @param PurchaseRequest $purchaseRequest
      * @param Purchase $purchase
-     * @return \XF\Mvc\Reply\Redirect
-     * @throws PrintableException
+     * @return \XF\Mvc\Reply\View
      */
     public function initiatePayment(Controller $controller, PurchaseRequest $purchaseRequest, Purchase $purchase)
     {
+        $bankList = $this->getBankList($purchaseRequest->PaymentProfile);
+        $bankList = \array_filter($bankList, function ($item) {
+            return $item['type'] == 1;
+        });
+
+        return $controller->view(
+            'Truonglv\PaymentBaoKim:BaoKim',
+            'tpb_payment_baokim_initiate',
+            \compact('purchaseRequest', 'purchase', 'bankList')
+        );
+    }
+
+    /**
+     * @param Controller $controller
+     * @param PurchaseRequest $purchaseRequest
+     * @param PaymentProfile $paymentProfile
+     * @param Purchase $purchase
+     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect
+     * @throws PrintableException
+     */
+    public function processPayment(
+        Controller $controller,
+        PurchaseRequest $purchaseRequest,
+        PaymentProfile $paymentProfile,
+        Purchase $purchase
+    ) {
         $params = $this->getPaymentParams($purchaseRequest, $purchase);
+        $bankList = $this->getBankList($paymentProfile);
+
+        $bankId = $controller->request()->filter('bank_id', 'uint');
+        $bankSelected = \array_filter($bankList, function ($item) use ($bankId) {
+            return $item['bank_id'] == $bankId;
+        });
+        if (\count($bankSelected) !== 1) {
+            return $controller->error(\XF::phrase('tbp_please_choose_a_valid_bank'));
+        }
+
+        $params['bpm_id'] = $bankId;
 
         $client = $controller->app()->http()->client();
         $response = null;

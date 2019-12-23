@@ -1,0 +1,17 @@
+<xf:title>{{ phrase('tpb_choose_a_bank') }}</xf:title>
+
+<xf:form action="{{ link('purchase/process') }}" ajax="true" class="block">
+    <div class="block-container">
+        <div class="block-body">
+            <xf:selectrow name="bank_id" label="{{ phrase('tbp_bank_name') }}">
+                <xf:foreach loop="$bankList" value="$bank">
+                    <xf:option value="{$bank.bank_id}">{$bank.bank_name}</xf:option>
+                </xf:foreach>
+            </xf:selectrow>
+        </div>
+
+        <xf:submitrow icon="purchase" submit="{{ phrase('tbp_continue...') }}"/>
+    </div>
+
+    <xf:hiddenval name="request_key">{$purchaseRequest.request_key}</xf:hiddenval>
+</xf:form>
