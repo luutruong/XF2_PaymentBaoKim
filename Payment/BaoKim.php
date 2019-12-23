@@ -50,6 +50,8 @@ class BaoKim extends AbstractProvider
      */
     protected function getPaymentParams(PurchaseRequest $purchaseRequest, Purchase $purchase)
     {
+        $extraData = $purchase->extraData;
+
         return [
             'mrc_order_id' => $purchaseRequest->request_key,
             'total_amount' => $purchase->cost,
@@ -59,7 +61,10 @@ class BaoKim extends AbstractProvider
             'accept_bank' => 1,
             'accept_cc' => 1,
             'accept_qrpay' => 1,
-            'webhooks' => $this->getCallbackUrl()
+            'webhooks' => $this->getCallbackUrl(),
+            'customer_email' => $purchaseRequest->User->email,
+            'customer_phone' => isset($extraData['phone_number']) ? $extraData['phone_number'] : '',
+            'customer_name' => $purchaseRequest->User->username
         ];
     }
 
@@ -291,7 +296,7 @@ class BaoKim extends AbstractProvider
      */
     private function getToken(PaymentProfile $paymentProfile, array $formData)
     {
-        $tokenId = base64_encode(\XF::generateRandomString(32, true));
+        $tokenId = \base64_encode(\XF::generateRandomString(32, true));
         $issueAt = \XF::$time;
         $expiresAt = \XF::$time + self::TOKEN_EXPIRE;
 
