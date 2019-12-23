@@ -5,7 +5,7 @@
         <div class="block-body">
             <xf:selectrow name="bank_id" label="{{ phrase('tbp_bank_name') }}">
                 <xf:foreach loop="$bankList" value="$bank">
-                    <xf:option value="{$bank.bank_id}">{$bank.bank_name}</xf:option>
+                    <xf:option value="{$bank.id}">{$bank.bank_name}</xf:option>
                 </xf:foreach>
             </xf:selectrow>
         </div>

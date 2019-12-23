@@ -164,7 +164,7 @@ class BaoKim extends AbstractProvider
 
         $bankId = $controller->request()->filter('bank_id', 'uint');
         $bankSelected = \array_filter($bankList, function ($item) use ($bankId) {
-            return $item['bank_id'] == $bankId;
+            return $item['id'] == $bankId;
         });
         if (\count($bankSelected) !== 1) {
             return $controller->error(\XF::phrase('tbp_please_choose_a_valid_bank'));
