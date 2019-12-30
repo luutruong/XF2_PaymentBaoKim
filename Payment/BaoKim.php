@@ -24,6 +24,8 @@ class BaoKim extends AbstractProvider
 
     const KEY_DATA_REGISTRY_BANK_LIST = 'TBP_BankList';
 
+    const BANK_ID_QRCODE = 297;
+
     /**
      * @return string
      */
@@ -150,7 +152,7 @@ class BaoKim extends AbstractProvider
      * @param PurchaseRequest $purchaseRequest
      * @param PaymentProfile $paymentProfile
      * @param Purchase $purchase
-     * @return \XF\Mvc\Reply\Error|\XF\Mvc\Reply\Redirect
+     * @return \XF\Mvc\Reply\AbstractReply
      * @throws PrintableException
      */
     public function processPayment(
@@ -162,12 +164,17 @@ class BaoKim extends AbstractProvider
         $params = $this->getPaymentParams($purchaseRequest, $purchase);
         $bankList = $this->getBankList($paymentProfile);
 
-        $bankId = $controller->request()->filter('bank_id', 'uint');
-        $bankSelected = \array_filter($bankList, function ($item) use ($bankId) {
-            return $item['id'] == $bankId;
-        });
-        if (\count($bankSelected) !== 1) {
-            return $controller->error(\XF::phrase('tbp_please_choose_a_valid_bank'));
+        $type = $controller->request()->filter('type', 'str');
+        if ($type === 'qrcode') {
+            $bankId = self::BANK_ID_QRCODE;
+        } else {
+            $bankId = $controller->request()->filter('bank_id', 'uint');
+            $bankSelected = \array_filter($bankList, function ($item) use ($bankId) {
+                return $item['id'] == $bankId;
+            });
+            if (\count($bankSelected) !== 1) {
+                return $controller->error(\XF::phrase('tbp_please_choose_a_valid_bank'));
+            }
         }
 
         $params['bpm_id'] = $bankId;
@@ -225,6 +232,16 @@ class BaoKim extends AbstractProvider
                 ->logException($error, false, '[tl] Payment BaoKim: ');
 
             throw new PrintableException(\XF::phrase('tpb_error_occurred_while_creating_order'));
+        }
+
+        if (isset($json['data'], $json['data']['data_qr'])) {
+            return $controller->view(
+                '',
+                'tbp_payment_baokim_qrcode',
+                [
+                    'qrCodeData' => $json['data']['data_qr']
+                ]
+            );
         }
 
         if (isset($json['data'], $json['data']['payment_url'])) {

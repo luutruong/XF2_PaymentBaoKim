@@ -1,0 +1,25 @@
+<xf:title>{{ phrase('tbp_complete_purchase') }}</xf:title>
+
+<xf:js src="vendor/qrcode/jquery-qrcode.min.js"/>
+
+<div class="block">
+    <div class="block-container">
+        <div class="block-body">
+            <xf:inforow rowtype="confirm">
+                {{ phrase('tbp_scan_below_qrcode_image_to_complete_purchase') }}
+                <div id="tbp_qrCodeImg" style="width: 200px;height: 200px;margin:10px auto;"
+                     data-contents="{$qrCodeData}"></div>
+            </xf:inforow>
+        </div>
+    </div>
+</div>
+
+<xf:js>
+    $(document).ready(function() {
+        $('#tbp_qrCodeImg').qrcode({
+            render: 'canvas',
+            background: null,
+            text: $('#tbp_qrCodeImg').data('contents'),
+        });
+    });
+</xf:js>

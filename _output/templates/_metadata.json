@@ -4,9 +4,14 @@
         "version_string": "1.0.0",
         "hash": "6b1f1241d4feaab132dfc92bdc1c236a"
     },
+    "public/tbp_payment_baokim_qrcode.html": {
+        "version_id": 1000100,
+        "version_string": "1.0.1",
+        "hash": "52199899e0c5c2d541a55a32159a14b6"
+    },
     "public/tpb_payment_baokim_initiate.html": {
         "version_id": 1000100,
         "version_string": "1.0.1",
-        "hash": "ecda7e03449826b89797555637da3fd7"
+        "hash": "ca13a888897eca548c5fdab63ba7a378"
     }
 }

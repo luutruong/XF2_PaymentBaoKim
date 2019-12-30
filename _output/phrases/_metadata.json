@@ -1,9 +1,9 @@
 {
-    "tbp_bank_name.txt": {
+    "tbp_complete_purchase.txt": {
         "global_cache": false,
-        "version_id": 1000000,
-        "version_string": "1.0.0",
-        "hash": "984482eb9ff11e6310fef641d2268a2a"
+        "version_id": 1000100,
+        "version_string": "1.0.1",
+        "hash": "f774ca5179d85b17babcd6d647a05673"
     },
     "tbp_continue.txt": {
         "global_cache": false,
@@ -11,11 +11,35 @@
         "version_string": "1.0.0",
         "hash": "a0bfb8e59e6c13fc8d990781f77694fe"
     },
+    "tbp_internet_banking.txt": {
+        "global_cache": false,
+        "version_id": 1000100,
+        "version_string": "1.0.1",
+        "hash": "47aafc83930f6ed844319f732a1f8311"
+    },
+    "tbp_payment_type.txt": {
+        "global_cache": false,
+        "version_id": 1000100,
+        "version_string": "1.0.1",
+        "hash": "4dbcb38bbbff5d4a402f2575c57a35e6"
+    },
     "tbp_please_choose_a_valid_bank.txt": {
         "global_cache": false,
         "version_id": 1000000,
         "version_string": "1.0.0",
         "hash": "17bf91868584e6128d33cf7766ea919a"
+    },
+    "tbp_scan_below_qrcode_image_to_complete_purchase.txt": {
+        "global_cache": false,
+        "version_id": 1000100,
+        "version_string": "1.0.1",
+        "hash": "d23c8614ecca8524ff7acd81f15cde6e"
+    },
+    "tbp_scan_qrcode_image.txt": {
+        "global_cache": false,
+        "version_id": 1000100,
+        "version_string": "1.0.1",
+        "hash": "42ce62333cabdc75b75d41260d42bfb6"
     },
     "tpb_api_key.txt": {
         "global_cache": false,
@@ -28,12 +52,6 @@
         "version_id": 1000000,
         "version_string": "1.0.0",
         "hash": "1ddec0f92f297e937bdf409977df0c02"
-    },
-    "tpb_choose_a_bank.txt": {
-        "global_cache": false,
-        "version_id": 1000000,
-        "version_string": "1.0.0",
-        "hash": "ab4147235204a436c09e00d6722082ab"
     },
     "tpb_error_occurred_while_creating_order.txt": {
         "global_cache": false,

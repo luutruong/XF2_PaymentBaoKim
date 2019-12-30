@@ -1,13 +1,20 @@
-<xf:title>{{ phrase('tpb_choose_a_bank') }}</xf:title>
+<xf:title>{{ phrase('tbp_complete_purchase') }}</xf:title>
 
 <xf:form action="{{ link('purchase/process') }}" ajax="true" class="block">
     <div class="block-container">
         <div class="block-body">
-            <xf:selectrow name="bank_id" label="{{ phrase('tbp_bank_name') }}">
-                <xf:foreach loop="$bankList" value="$bank">
-                    <xf:option value="{$bank.id}">{$bank.bank_name}</xf:option>
-                </xf:foreach>
-            </xf:selectrow>
+            <xf:radiorow name="type" label="{{ phrase('tbp_payment_type') }}">
+                <xf:option value="qrcode">{{ phrase('tbp_scan_qrcode_image') }}</xf:option>
+                <xf:option value="bank" label="{{ phrase('tbp_internet_banking') }}">
+                    <xf:dependent>
+                        <xf:select name="bank_id">
+                            <xf:foreach loop="$bankList" value="$bank">
+                                <xf:option value="{$bank.id}">{$bank.bank_name}</xf:option>
+                            </xf:foreach>
+                        </xf:select>
+                    </xf:dependent>
+                </xf:option>
+            </xf:radiorow>
         </div>
 
         <xf:submitrow icon="purchase" submit="{{ phrase('tbp_continue...') }}"/>
