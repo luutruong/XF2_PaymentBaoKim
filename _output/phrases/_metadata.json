@@ -29,12 +29,6 @@
         "version_string": "1.0.0",
         "hash": "17bf91868584e6128d33cf7766ea919a"
     },
-    "tbp_scan_below_qrcode_image_to_complete_purchase.txt": {
-        "global_cache": false,
-        "version_id": 1000100,
-        "version_string": "1.0.1",
-        "hash": "d23c8614ecca8524ff7acd81f15cde6e"
-    },
     "tbp_scan_qrcode_image.txt": {
         "global_cache": false,
         "version_id": 1000100,

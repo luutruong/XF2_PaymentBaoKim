@@ -234,16 +234,6 @@ class BaoKim extends AbstractProvider
             throw new PrintableException(\XF::phrase('tpb_error_occurred_while_creating_order'));
         }
 
-        if (isset($json['data'], $json['data']['data_qr'])) {
-            return $controller->view(
-                '',
-                'tbp_payment_baokim_qrcode',
-                [
-                    'qrCodeData' => $json['data']['data_qr']
-                ]
-            );
-        }
-
         if (isset($json['data'], $json['data']['payment_url'])) {
             return $controller->redirect(
                 $json['data']['payment_url'],
