@@ -319,7 +319,7 @@ class BaoKim extends AbstractProvider
                     'jwt' => $this->getToken($state->paymentProfile, [])
                 ]
             ]);
-        } catch (\Exception $e) {
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             $state->logType = 'error';
             $state->logMessage = $e->getMessage();
             $state->httpCode = 400;
@@ -337,9 +337,10 @@ class BaoKim extends AbstractProvider
         }
 
         $data = \json_decode(\strval($response->getBody()), true);
-        $order = $data['data'];
+        $order = isset($data['data']) ? $data['data'] : [];
 
-        if ($order['mrc_order_id'] !== $state->requestKey) {
+        $mrcOrderId = isset($order['mrc_order_id']) ? $order['mrc_order_id'] : null;
+        if (!$mrcOrderId || $mrcOrderId !== $state->requestKey) {
             return false;
         }
 
