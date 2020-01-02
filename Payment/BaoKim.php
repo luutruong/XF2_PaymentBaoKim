@@ -302,7 +302,7 @@ class BaoKim extends AbstractProvider
             $state->logMessage = 'Data received from BaoKim does not contain the expected values.';
 
             if (!$state->requestKey) {
-                $state->httpCode = 200; // Not likely to recover from this error so send a successful response.
+                $state->httpCode = 200;
             }
 
             return false;
@@ -323,7 +323,7 @@ class BaoKim extends AbstractProvider
         }
 
         $userSign = \hash_hmac('sha256', $signData, $state->paymentProfile->options['api_secret']);
-        if ($knownSign !== $userSign) {
+        if (!\hash_equals($knownSign, $userSign)) {
             $state->logType = 'error';
             $state->logMessage = 'Webhook received from BaoKim could not be verified as being valid.';
             $state->httpCode = 400;
