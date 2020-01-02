@@ -381,11 +381,6 @@ class BaoKim extends AbstractProvider
         $result = $state->inputFiltered['order']['stat'];
         if ($result === 'c') {
             $state->paymentResult = CallbackState::PAYMENT_RECEIVED;
-
-            $state->logMessage = \json_encode([
-                'err_code' => 0,
-                'message' => 'ok'
-            ]);
         }
     }
 
@@ -398,6 +393,24 @@ class BaoKim extends AbstractProvider
         $state->logDetails = $state->_POST + [
             'raw' => $state->inputRaw
         ];
+    }
+
+    /**
+     * @param CallbackState $state
+     * @return void
+     */
+    public function completeTransaction(CallbackState $state)
+    {
+        parent::completeTransaction($state);
+
+        if ($state->paymentResult === CallbackState::PAYMENT_RECEIVED
+            || $state->paymentResult === CallbackState::PAYMENT_REINSTATED
+        ) {
+            $state->logMessage = \json_encode([
+                'err_code' => 0,
+                'message' => 'ok'
+            ]);;
+        }
     }
 
     /**
