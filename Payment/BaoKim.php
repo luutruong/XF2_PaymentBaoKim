@@ -336,7 +336,7 @@ class BaoKim extends AbstractProvider
             return false;
         }
 
-        $data = \json_decode(\strval($response->getBody()));
+        $data = \json_decode(\strval($response->getBody()), true);
         $order = $data['data'];
 
         if ($order['mrc_order_id'] !== $state->requestKey) {
