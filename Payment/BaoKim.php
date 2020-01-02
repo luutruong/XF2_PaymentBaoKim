@@ -308,12 +308,17 @@ class BaoKim extends AbstractProvider
             return false;
         }
 
-        $filtered = $state->inputFiltered;
-        $knownSign = $filtered['sign'];
-        unset($filtered['sign']);
+        $inputRaw = $state->inputRaw;
+        $input = \json_decode($inputRaw, true);
+        $knownSign = $input['sign'];
+        unset($input['sign']);
 
-        $signData = \json_encode($filtered);
+        $signData = \json_encode($input);
         if ($signData === false) {
+            $state->logType = 'error';
+            $state->logMessage = \json_last_error_msg();
+            $state->httpCode = 400;
+
             return false;
         }
 
@@ -374,7 +379,9 @@ class BaoKim extends AbstractProvider
      */
     public function prepareLogData(CallbackState $state)
     {
-        $state->logDetails = $state->_POST;
+        $state->logDetails = $state->_POST + [
+            'raw' => $state->inputRaw
+        ];
     }
 
     /**
