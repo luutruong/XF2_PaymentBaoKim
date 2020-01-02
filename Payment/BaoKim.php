@@ -309,12 +309,13 @@ class BaoKim extends AbstractProvider
         }
 
         $client = \XF::app()->http()->client();
+        $inputFiltered = $state->inputFiltered;
 
         try {
             $response = $client->get($this->getApiEndpoint() . '/api/v4/order/detail', [
                 'query' => [
-                    'id' => '',
-                    'mrc_order_id' => ''
+                    'id' => $inputFiltered['order']['order_id'],
+                    'mrc_order_id' => $state->requestKey
                 ]
             ]);
         } catch (\Exception $e) {
@@ -341,7 +342,6 @@ class BaoKim extends AbstractProvider
             return false;
         }
 
-        $inputFiltered = $state->inputFiltered;
         $inputFiltered = array_replace_recursive($inputFiltered, [
             'order' => $order
         ]);
