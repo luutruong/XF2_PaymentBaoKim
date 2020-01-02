@@ -314,7 +314,7 @@ class BaoKim extends AbstractProvider
         try {
             $response = $client->get($this->getApiEndpoint() . '/api/v4/order/detail', [
                 'query' => [
-                    'id' => $inputFiltered['order']['order_id'],
+                    'id' => $inputFiltered['order']['id'],
                     'mrc_order_id' => $state->requestKey
                 ]
             ]);
