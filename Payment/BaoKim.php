@@ -312,10 +312,11 @@ class BaoKim extends AbstractProvider
         $inputFiltered = $state->inputFiltered;
 
         try {
-            $response = $client->get($this->getApiEndpoint() . '/api/v4/order/detail', [
+            $response = $client->get($this->getApiEndpoint() . '/payment/api/v4/order/detail', [
                 'query' => [
                     'id' => $inputFiltered['order']['id'],
-                    'mrc_order_id' => $state->requestKey
+                    'mrc_order_id' => $state->requestKey,
+                    'jwt' => $this->getToken($state->paymentProfile, [])
                 ]
             ]);
         } catch (\Exception $e) {
