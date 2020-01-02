@@ -250,7 +250,7 @@ class BaoKim extends AbstractProvider
      */
     public function setupCallback(\XF\Http\Request $request)
     {
-        $inputRaw = $request->getInputRaw();
+        $inputRaw = \file_get_contents('php://input');
         $json = \json_decode($inputRaw, true);
         if (!\is_array($json)) {
             $json = [];
@@ -308,28 +308,44 @@ class BaoKim extends AbstractProvider
             return false;
         }
 
-        $inputRaw = $state->inputRaw;
-        $input = \json_decode($inputRaw, true);
-        $knownSign = $input['sign'];
-        unset($input['sign']);
+        $client = \XF::app()->http()->client();
 
-        $signData = \json_encode($input);
-        if ($signData === false) {
+        try {
+            $response = $client->get($this->getApiEndpoint() . '/api/v4/order/detail', [
+                'query' => [
+                    'id' => '',
+                    'mrc_order_id' => ''
+                ]
+            ]);
+        } catch (\Exception $e) {
             $state->logType = 'error';
-            $state->logMessage = \json_last_error_msg();
+            $state->logMessage = $e->getMessage();
             $state->httpCode = 400;
 
             return false;
         }
 
-        $userSign = \hash_hmac('sha256', $signData, $state->paymentProfile->options['api_secret']);
-        if (!\hash_equals($knownSign, $userSign)) {
+        if ($response->getStatusCode() !== 200) {
             $state->logType = 'error';
-            $state->logMessage = 'Webhook received from BaoKim could not be verified as being valid.';
+            $state->logMessage = $response->getReasonPhrase();
+
             $state->httpCode = 400;
 
             return false;
         }
+
+        $data = \json_decode(\strval($response->getBody()));
+        $order = $data['data'];
+
+        if ($order['mrc_order_id'] !== $state->requestKey) {
+            return false;
+        }
+
+        $inputFiltered = $state->inputFiltered;
+        $inputFiltered = array_replace_recursive($inputFiltered, [
+            'order' => $order
+        ]);
+        $state->inputFiltered = $inputFiltered;
 
         return true;
     }
