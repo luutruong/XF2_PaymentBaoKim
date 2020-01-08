@@ -3,7 +3,7 @@
 <xf:form action="{{ link('purchase/process') }}" ajax="true" class="block">
     <div class="block-container">
         <div class="block-body">
-            <xf:radiorow name="type" label="{{ phrase('tbp_payment_type') }}">
+            <xf:radiorow name="type" value="qrcode" label="{{ phrase('tbp_payment_type') }}">
                 <xf:option value="qrcode">{{ phrase('tbp_scan_qrcode_image') }}</xf:option>
                 <xf:option value="bank" label="{{ phrase('tbp_internet_banking') }}">
                     <xf:dependent>

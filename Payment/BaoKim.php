@@ -251,6 +251,9 @@ class BaoKim extends AbstractProvider
     public function setupCallback(\XF\Http\Request $request)
     {
         $inputRaw = \file_get_contents('php://input');
+        if ($inputRaw === false) {
+            $inputRaw = '';
+        }
         $json = \json_decode($inputRaw, true);
         if (!\is_array($json)) {
             $json = [];
@@ -411,7 +414,8 @@ class BaoKim extends AbstractProvider
             $state->logMessage = \json_encode([
                 'err_code' => 0,
                 'message' => 'ok'
-            ]);;
+            ]);
+            ;
         }
     }
 
