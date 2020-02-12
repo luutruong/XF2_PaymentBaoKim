@@ -361,11 +361,8 @@ class BaoKim extends AbstractProvider
      */
     public function validateCost(CallbackState $state)
     {
-        $totalAmount = $state->inputFiltered['order']['total_amount'];
-        $taxFee = $state->inputFiltered['order']['tax_fee'];
-
         $cost = \round($state->purchaseRequest->cost_amount, 2);
-        $totalPaid = \round($totalAmount - $taxFee, 2);
+        $totalPaid = \round($state->inputFiltered['txn']['total_amount'], 2);
 
         if ($cost !== $totalPaid) {
             $state->logType = 'error';
