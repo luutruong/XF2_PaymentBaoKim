@@ -344,6 +344,9 @@ class BaoKim extends AbstractProvider
 
         $mrcOrderId = isset($order['mrc_order_id']) ? $order['mrc_order_id'] : null;
         if (!$mrcOrderId || $mrcOrderId !== $state->requestKey) {
+            $state->logType = 'error';
+            $state->logMessage = 'Mismatch order ID.';
+
             return false;
         }
 
