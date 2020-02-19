@@ -411,9 +411,7 @@ class BaoKim extends AbstractProvider
     {
         parent::completeTransaction($state);
 
-        if ($state->paymentResult === CallbackState::PAYMENT_RECEIVED
-            || $state->paymentResult === CallbackState::PAYMENT_REINSTATED
-        ) {
+        if ($state->logType === 'payment') {
             $state->logMessage = \json_encode([
                 'err_code' => 0,
                 'message' => 'ok'
