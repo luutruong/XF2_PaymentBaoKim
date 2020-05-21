@@ -55,6 +55,10 @@ class BaoKim extends AbstractProvider
      */
     protected function getPaymentParams(PurchaseRequest $purchaseRequest, Purchase $purchase)
     {
+        if ($purchaseRequest->User === null) {
+            throw new \LogicException('Request must be specific user!');
+        }
+
         $extraData = $purchase->extraData;
 
         return [
@@ -136,7 +140,9 @@ class BaoKim extends AbstractProvider
      */
     public function initiatePayment(Controller $controller, PurchaseRequest $purchaseRequest, Purchase $purchase)
     {
-        $bankList = $this->getBankList($purchaseRequest->PaymentProfile);
+        /** @var PaymentProfile $paymentProfile */
+        $paymentProfile = $purchaseRequest->PaymentProfile;
+        $bankList = $this->getBankList($paymentProfile);
         $bankList = \array_filter($bankList, function ($item) {
             return $item['type'] == 1;
         });
@@ -191,7 +197,7 @@ class BaoKim extends AbstractProvider
                 [
                     'form_params' => $params,
                     'query' => [
-                        'jwt' => $this->getToken($purchaseRequest->PaymentProfile, $params)
+                        'jwt' => $this->getToken($paymentProfile, $params)
                     ]
                 ]
             );
