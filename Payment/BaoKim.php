@@ -25,6 +25,7 @@ class BaoKim extends AbstractProvider
     const KEY_DATA_REGISTRY_BANK_LIST = 'TBP_BankList';
 
     const BANK_ID_QRCODE = 297;
+    const BANK_ID_MOMO = 299;
 
     /**
      * @return string
@@ -167,6 +168,8 @@ class BaoKim extends AbstractProvider
         $type = $controller->request()->filter('type', 'str');
         if ($type === 'qrcode') {
             $bankId = self::BANK_ID_QRCODE;
+        } elseif ($type === 'momo') {
+            $bankId = self::BANK_ID_MOMO;
         } else {
             $bankId = $controller->request()->filter('bank_id', 'uint');
             $bankSelected = \array_filter($bankList, function ($item) use ($bankId) {

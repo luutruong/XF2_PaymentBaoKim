@@ -5,6 +5,7 @@
         <div class="block-body">
             <xf:radiorow name="type" value="qrcode" label="{{ phrase('tbp_payment_type') }}">
                 <xf:option value="qrcode">{{ phrase('tbp_scan_qrcode_image') }}</xf:option>
+                <xf:option value="momo">{{ phrase('tbp_via_your_momo_account') }}</xf:option>
                 <xf:option value="bank" label="{{ phrase('tbp_internet_banking') }}">
                     <xf:dependent>
                         <xf:select name="bank_id">

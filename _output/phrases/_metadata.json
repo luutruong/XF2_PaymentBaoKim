@@ -35,6 +35,12 @@
         "version_string": "1.0.1",
         "hash": "42ce62333cabdc75b75d41260d42bfb6"
     },
+    "tbp_via_your_momo_account.txt": {
+        "global_cache": false,
+        "version_id": 1000300,
+        "version_string": "1.0.3",
+        "hash": "81a8b8f6753ace1bba6e3a00e24a2897"
+    },
     "tpb_api_key.txt": {
         "global_cache": false,
         "version_id": 1000000,
