@@ -1,6 +1,9 @@
 {
-  
     "require": {
         "firebase/php-jwt": "^5.0"
+    },
+    "config": {
+        "autoloader-suffix": "PaymentBaoKim",
+        "optimize-autoloader": true
     }
 }
