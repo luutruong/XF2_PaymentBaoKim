@@ -29,6 +29,18 @@
         "version_string": "1.0.0",
         "hash": "17bf91868584e6128d33cf7766ea919a"
     },
+    "tbp_please_enter_valid_api_key.txt": {
+        "global_cache": false,
+        "version_id": 1000400,
+        "version_string": "1.0.4",
+        "hash": "2fb19eed88ccd0763f0a9c5de7b18c4a"
+    },
+    "tbp_please_enter_valid_api_secret.txt": {
+        "global_cache": false,
+        "version_id": 1000400,
+        "version_string": "1.0.4",
+        "hash": "ab8cab0d42f282d41b7f34c2e7181d6a"
+    },
     "tbp_scan_qrcode_image.txt": {
         "global_cache": false,
         "version_id": 1000100,

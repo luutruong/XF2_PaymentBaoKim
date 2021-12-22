@@ -49,6 +49,28 @@ class BaoKim extends AbstractProvider
     }
 
     /**
+     * @param array $options
+     * @param mixed $errors
+     * @return bool
+     */
+    public function verifyConfig(array &$options, &$errors = [])
+    {
+        if (strlen($options['api_key']) === 0) {
+            $errors[] = \XF::phrase('tbp_please_enter_valid_api_key');
+
+            return false;
+        }
+
+        if (strlen($options['api_secret']) === 0) {
+            $errors[] = \XF::phrase('tbp_please_enter_valid_api_secret');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @param PurchaseRequest $purchaseRequest
      * @param Purchase $purchase
      * @return array
