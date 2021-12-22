@@ -11,6 +11,11 @@
     "extra_urls": {
         "Repository": "https://github.com/luutruong/XF2_PaymentBaoKim"
     },
-    "require": [],
+    "require": {
+        "php": [
+            "7.2.0",
+            "PHP 7.2.0 or higher"
+        ]
+    },
     "icon": ""
 }
