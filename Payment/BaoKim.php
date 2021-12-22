@@ -12,7 +12,7 @@ use XF\Entity\PurchaseRequest;
 use XF\Payment\AbstractProvider;
 use XF\Entity\PaymentProviderLog;
 
-if (!class_exists('\Firebase\JWT\JWT')) {
+if (!class_exists('Firebase\JWT\JWT')) {
     require_once __DIR__ . '/../vendor/autoload.php';
 }
 
@@ -61,7 +61,7 @@ class BaoKim extends AbstractProvider
 
         $extraData = $purchase->extraData;
 
-        return [
+        $params = [
             'mrc_order_id' => $purchaseRequest->request_key,
             'total_amount' => $purchase->cost,
             'description' => $purchase->description,
@@ -72,9 +72,18 @@ class BaoKim extends AbstractProvider
             'accept_qrpay' => 1,
             'webhooks' => $this->getCallbackUrl(),
             'customer_email' => $purchaseRequest->User->email,
-            'customer_phone' => isset($extraData['phone_number']) ? $extraData['phone_number'] : '',
-            'customer_name' => $purchaseRequest->User->username
+            'customer_name' => $purchaseRequest->User->username,
+            'lang' => 'vi'
         ];
+
+        if (isset($extraData['phone_number'])) {
+            $params['customer_phone'] = $extraData['phone_number'];
+        }
+        if (isset($extraData['customer_address'])) {
+            $params['customer_address'] = $extraData['customer_address'];
+        }
+
+        return $params;
     }
 
     /**
@@ -248,6 +257,14 @@ class BaoKim extends AbstractProvider
                 $json['data']['payment_url'],
                 ''
             );
+        }
+
+        $code = $json['code'] ?? null;
+        if ($code !== null && $code > 0) {
+            // https://developer.baokim.vn/payment/#bng-m-li7
+            foreach ($json['message'] as $errors) {
+                throw new PrintableException($errors);
+            }
         }
 
         throw new PrintableException(\XF::phrase('tpb_error_occurred_while_creating_order'));
@@ -448,15 +465,17 @@ class BaoKim extends AbstractProvider
      */
     private function getToken(PaymentProfile $paymentProfile, array $formData)
     {
+        $now = time();
+
         $tokenId = \base64_encode(\XF::generateRandomString(32, true));
-        $issueAt = \XF::$time;
-        $expiresAt = \XF::$time + self::TOKEN_EXPIRE;
+        $issueAt = $now;
+        $expiresAt = $now + self::TOKEN_EXPIRE;
 
         $payload = [
             'iat' => $issueAt,
             'jti' => $tokenId,
             'iss' => $paymentProfile->options['api_key'],
-            'nbf' => \XF::$time,
+            'nbf' => $now,
             'exp' => $expiresAt,
             'form_params' => $formData
         ];
