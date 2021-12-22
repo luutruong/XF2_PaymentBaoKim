@@ -368,10 +368,10 @@ class BaoKim extends AbstractProvider
         $data = \json_decode(\strval($response->getBody()), true);
         $state->orderDetail = $data;
 
-        $order = isset($data['data']) ? $data['data'] : [];
+        $order = $data['data'] ?? [];
 
-        $mrcOrderId = isset($order['mrc_order_id']) ? $order['mrc_order_id'] : null;
-        if (!$mrcOrderId || $mrcOrderId !== $state->requestKey) {
+        $mrcOrderId = $order['mrc_order_id'] ?? null;
+        if ($mrcOrderId === null || $mrcOrderId !== $state->requestKey) {
             $state->logType = 'error';
             $state->logMessage = 'Mismatch order ID.';
 
